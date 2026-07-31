@@ -3,9 +3,9 @@ use anyhow::Result;
 use std::path::PathBuf;
 
 pub fn open(path: Option<PathBuf>) -> Result<()> {
-    let path = path
-        .map(|p| expand_tilde(&p))
-        .unwrap_or(std::env::current_dir()?);
+  let path = path
+    .map(|p| expand_tilde(&p))
+    .unwrap_or(std::env::current_dir()?);
 
-    open_file_manager(&path)
+  open_file_manager(&path)
 }

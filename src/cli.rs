@@ -41,16 +41,13 @@ pub enum Commands {
   )]
   List,
 
-  /// Open the configured file manager.
+  /// Open a mounted VeraCrypt volume.
   #[command(
-    about = "Open the file manager",
-    long_about = "Open the configured file manager at a path. If no path is provided, the current directory is opened.",
-    after_help = "Examples:\n  vc-cli open\n  vc open ~/Documents\n  vc open /mnt"
+    about = "Open a mounted VeraCrypt volume",
+    long_about = "Open a mounted VeraCrypt volume in the configured file manager. If more than one volume is mounted, a selection prompt is shown.",
+    after_help = "Examples:\n  vc-cli open\n  vc open"
   )]
-  Open {
-    /// Directory or file path to open.
-    path: Option<PathBuf>,
-  },
+  Open,
 
   /// Manage Vera configuration.
   #[command(

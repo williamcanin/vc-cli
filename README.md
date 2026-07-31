@@ -36,6 +36,12 @@ Build the release binaries:
 make release
 ```
 
+Reinstall the current local version:
+
+```sh
+make update
+```
+
 ## Install
 
 Install both `vc-cli` and `vc` using Cargo:
@@ -106,7 +112,7 @@ List mounted volumes:
 vc list
 ```
 
-Open the configured file manager:
+Open a mounted volume in the configured file manager:
 
 ```sh
 vc open

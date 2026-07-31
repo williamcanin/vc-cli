@@ -1,6 +1,7 @@
 mod config;
 mod list;
 mod mount;
+mod mounted;
 mod open;
 mod umount;
 mod volume;

@@ -3,7 +3,7 @@ BRANCH := $(shell git branch --show-current)
 REMOTES := $(shell git remote)
 
 # ----- Targets -----
-.PHONY: all build check release install uninstall fmt fmt-check clippy test tests clean push push-lease
+.PHONY: all build check release install update uninstall fmt fmt-check clippy test tests clean push push-lease
 
 # ----- Default -----
 all: build
@@ -19,6 +19,8 @@ release: check
 
 install: release
 	cargo install --path . --locked --force
+
+update: install
 
 uninstall:
 	cargo uninstall vc-cli

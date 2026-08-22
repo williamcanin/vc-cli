@@ -117,3 +117,9 @@ Open a mounted volume in the configured file manager:
 ```sh
 vc open
 ```
+
+# Extras
+
+Install the `veracrypt-security-exit` package for Arch Linux from the [extension](extension/) directory.
+
+This package is essential for safely unmounting **VeraCrypt** drives upon logout, reboot, or system shutdown. This prevents errors, particularly with devices using the **NTFS** file system.

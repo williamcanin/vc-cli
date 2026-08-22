@@ -118,6 +118,21 @@ Open a mounted volume in the configured file manager:
 vc open
 ```
 
+## Repair
+
+Recover volumes with NTFS errors (bad sectors, dirty flag) in four steps:
+
+```sh
+vc fix mount ~/vault.hc   # 1. open without mounting the filesystem (interactive if no path)
+vc fix list               # 2. shows the mapped device, e.g. /dev/mapper/veracrypt1
+vc fix ntfs               # 3. runs ntfsfix and mounts at /tmp/veracrypt1 with ntfs3
+vc fix umount             # 4. unmounts and dismounts all repair-mode volumes
+```
+
+`vc fix mount` accepts `-k/--keyfile <path>`; when omitted it asks interactively. The password is always requested by VeraCrypt directly, never passed as an argument.
+
+`vc fix ntfs [MAPPER]` accepts a device path (`/dev/mapper/veracrypt1`), a device name (`veracrypt1`), or a slot number (`1`); interactive selection otherwise. Options: `-m/--mount-point <dir>` overrides `/tmp/<device>`, `--no-mount` skips mounting.
+
 # Extras
 
 Install the `veracrypt-security-exit` package for Arch Linux from the [extension](extension/) directory.

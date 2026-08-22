@@ -1,0 +1,28 @@
+# Maintainer: William <you@example.com>  # TODO: update with your real name/email
+pkgname=veracrypt-security-exit
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Automatically unmount all VeraCrypt volumes before shutdown/reboot and on desktop logout"
+arch=('any')
+url="https://github.com/gnarus-sh/veracrypt-security-exit"  # TODO: update to your actual repo, if any
+license=('MIT')  # TODO: confirm/adjust license
+depends=('veracrypt' 'systemd' 'sudo')
+backup=('etc/sudoers.d/veracrypt-security-exit')
+install="${pkgname}.install"
+source=(
+    "${pkgname}.sh"
+    "${pkgname}.service"
+    "${pkgname}.sudoers"
+)
+sha256sums=('SKIP' 'SKIP' 'SKIP')  # local sources — run `updpkgsums` before publishing to the AUR
+
+package() {
+    install -Dm755 "${srcdir}/${pkgname}.sh" \
+        "${pkgdir}/usr/bin/${pkgname}.sh"
+
+    install -Dm644 "${srcdir}/${pkgname}.service" \
+        "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+
+    install -Dm440 "${srcdir}/${pkgname}.sudoers" \
+        "${pkgdir}/etc/sudoers.d/${pkgname}"
+}

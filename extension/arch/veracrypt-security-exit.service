@@ -1,0 +1,13 @@
+[Unit]
+Description=Unmount all VeraCrypt volumes before shutdown/reboot
+DefaultDependencies=no
+Before=shutdown.target reboot.target halt.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/true
+ExecStop=/usr/bin/veracrypt-security-exit.sh
+
+[Install]
+WantedBy=multi-user.target

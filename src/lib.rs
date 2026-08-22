@@ -18,6 +18,16 @@ pub fn run() -> Result<()> {
       cli::ConfigCommands::Create { force } => commands::create_config(force)?,
       cli::ConfigCommands::Open => commands::open_config()?,
     },
+    Commands::Fix { command } => match command {
+      cli::FixCommands::Mount { path, keyfile } => commands::fix_mount(path, keyfile)?,
+      cli::FixCommands::List => commands::fix_list()?,
+      cli::FixCommands::Ntfs {
+        mapper,
+        mount_point,
+        no_mount,
+      } => commands::fix_ntfs(mapper, mount_point, !no_mount)?,
+      cli::FixCommands::Umount => commands::fix_umount()?,
+    },
   }
 
   Ok(())

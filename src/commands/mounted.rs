@@ -2,7 +2,7 @@ use anyhow::{Context, Result, bail};
 use std::path::PathBuf;
 use std::process::Command;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MountedVolume {
   pub slot: usize,
   pub volume_path: String,

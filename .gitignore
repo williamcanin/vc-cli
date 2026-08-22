@@ -11,6 +11,9 @@
 # This repo
 # -------------------------------------------------------------
 /tmp
+extension/arch/pkg/
+extension/arch/src/
+*.zst
 .idea/
 .envrc
 TODO.txt

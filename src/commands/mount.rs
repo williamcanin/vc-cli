@@ -14,42 +14,13 @@ pub fn mount(path: Option<PathBuf>) -> Result<()> {
   if free_slots.is_empty() {
     bail!("No free VeraCrypt slots available.");
   }
-
-  let slot_items = free_slots
-    .iter()
-    .map(|slot| format!("Slot {slot}"))
-    .collect::<Vec<_>>();
-
-  let slot_idx = Select::with_theme(&ColorfulTheme::default())
-    .with_prompt("Select the slot")
-    .default(0)
-    .items(&slot_items)
-    .interact()?;
-  let slot_number = free_slots[slot_idx];
+  let slot_number = choose_slot(&free_slots)?;
 
   let password = Password::with_theme(&ColorfulTheme::default())
     .with_prompt("Password")
     .interact()?;
 
-  let keyfile_options = ["Yes", "No"];
-  let keyfile_idx = Select::with_theme(&ColorfulTheme::default())
-    .with_prompt("Use keyfile")
-    .default(1)
-    .items(keyfile_options)
-    .interact()?;
-
-  let keyfile: Option<String> = if keyfile_idx == 0 {
-    let raw: String = Input::with_theme(&ColorfulTheme::default())
-      .with_prompt("Keyfile path")
-      .interact_text()?;
-    Some(
-      expand_tilde(&PathBuf::from(raw))
-        .to_string_lossy()
-        .to_string(),
-    )
-  } else {
-    None
-  };
+  let keyfile = prompt_keyfile(None)?;
 
   println!("Mounting {}...", volume.display());
 
@@ -82,7 +53,7 @@ pub fn mount(path: Option<PathBuf>) -> Result<()> {
   Ok(())
 }
 
-fn free_slots() -> Result<Vec<usize>> {
+pub(crate) fn free_slots() -> Result<Vec<usize>> {
   let mounted = list_mounted_volumes()?;
   let used_slots = mounted.iter().map(|volume| volume.slot).collect::<Vec<_>>();
 
@@ -95,6 +66,49 @@ fn free_slots_from_used_slots(used_slots: &[usize]) -> Vec<usize> {
     .copied()
     .filter(|slot| !used_slots.contains(slot))
     .collect()
+}
+
+pub(crate) fn choose_slot(free_slots: &[usize]) -> Result<usize> {
+  let items = free_slots
+    .iter()
+    .map(|slot| format!("Slot {slot}"))
+    .collect::<Vec<_>>();
+
+  let idx = Select::with_theme(&ColorfulTheme::default())
+    .with_prompt("Select the slot")
+    .default(0)
+    .items(&items)
+    .interact()?;
+
+  Ok(free_slots[idx])
+}
+
+pub(crate) fn prompt_keyfile(keyfile: Option<String>) -> Result<Option<String>> {
+  let keyfile = match keyfile {
+    Some(k) => k,
+    None => {
+      let options = ["Yes", "No"];
+      let idx = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Use keyfile")
+        .default(1)
+        .items(options)
+        .interact()?;
+
+      if idx != 0 {
+        return Ok(None);
+      }
+
+      Input::with_theme(&ColorfulTheme::default())
+        .with_prompt("Keyfile path")
+        .interact_text()?
+    }
+  };
+
+  Ok(Some(
+    expand_tilde(&PathBuf::from(keyfile))
+      .to_string_lossy()
+      .to_string(),
+  ))
 }
 
 #[cfg(test)]

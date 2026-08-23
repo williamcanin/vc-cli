@@ -1,10 +1,14 @@
 use crate::commands::mounted::list_mounted_volumes;
 use crate::commands::volume::open_file_manager;
-use anyhow::Result;
+use anyhow::{Result, bail};
 use dialoguer::{Select, theme::ColorfulTheme};
 
 pub fn open() -> Result<()> {
-  let volumes = list_mounted_volumes()?;
+  let volumes = list_mounted_volumes()?
+    .into_iter()
+    .filter(|volume| volume.mount_point.is_some())
+    .collect::<Vec<_>>();
+
   if volumes.is_empty() {
     eprintln!("Warning: No mounted volumes found.");
     return Ok(());
@@ -25,5 +29,8 @@ pub fn open() -> Result<()> {
       .interact()?
   };
 
-  open_file_manager(&volumes[selected].mount_point)
+  match &volumes[selected].mount_point {
+    Some(mount_point) => open_file_manager(mount_point),
+    None => bail!("Volume has no mount point."),
+  }
 }

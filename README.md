@@ -135,6 +135,6 @@ vc fix umount             # 4. unmounts and dismounts all repair-mode volumes
 
 # Extras
 
-Install the `veracrypt-security-exit` package for Arch Linux from the [extension](extension/) directory.
+Install the `veracrypt-security-exit` package for Arch Linux from the [extension](extensions/veracrypt-security-exit) directory.
 
 This package is essential for safely unmounting **VeraCrypt** drives upon logout, reboot, or system shutdown. This prevents errors, particularly with devices using the **NTFS** file system.

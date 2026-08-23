@@ -77,7 +77,7 @@ pub enum FixCommands {
   /// Open a volume without mounting its filesystem.
   #[command(
     about = "Open a volume without mounting its filesystem",
-    long_about = "Open a VeraCrypt volume with --filesystem=none so the filesystem can be repaired. VeraCrypt asks for the password interactively instead of receiving it as an argument. If no path is provided, a file picker is opened.",
+    long_about = "Open a VeraCrypt volume with --filesystem=none so the filesystem can be repaired. The password is asked first and sent to VeraCrypt over stdin, never exposed on the command line. If no path is provided, a file picker is opened.",
     after_help = "Examples:\n  vc-cli fix mount ~/vault.hc\n  vc fix mount -k ~/key.bin\n  vc fix mount"
   )]
   Mount {
